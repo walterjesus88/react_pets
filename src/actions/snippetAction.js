@@ -49,7 +49,9 @@ export const getToken = (username, password) => {
   return async (dispatch) => {
     //dispatch(addTodoRequest());
     try {      
-      const token = await fetchToken(username, password);      
+      const token = await fetchToken(username, password);  
+
+      console.log(token)    
       localStorage.setItem('authToken', token);
 
     } catch (error) {
@@ -67,7 +69,7 @@ export const fetchSnippets = () => {
       const snippets = await getSnippets();
       console.log(snippets)
 
-      dispatch(fectchSnippetActions.success(snippets)); 
+      dispatch(fectchSnippetActions.success(snippets.snippets)); 
 
     } catch (error) {
       dispatch(fectchSnippetActions.failure(error));

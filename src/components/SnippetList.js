@@ -10,7 +10,12 @@ const SnippetList = ({ onSnippetSelect }) => {
     //const snippets = useSelector((state) => state.snippets); // Acceder al estado global
 
     //const { snippets,  loading, error } = useSelector((state) => state.snippets);
-    const snippets = useSelector((state) => state.snippetReducer.snippets);
+    //const {snippets, loading, error} = useSelector((state) => state.snippets.snippets);
+
+    const snippets = useSelector((state) => state.snippets.snippets);
+    const loading = useSelector((state) => state.snippets.loading);
+    const error = useSelector((state) => state.snippets.error);
+
     console.log(snippets)
     //const [newSnippet, setNewSnippet] = useState({ title: '', code: '', language: '', style: '' });
     //const [isModalOpen, setIsModalOpen] = useState(false);

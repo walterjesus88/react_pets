@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
 import {addSnippet } from '../actions/snippetAction';
@@ -6,12 +6,7 @@ import {addSnippet } from '../actions/snippetAction';
 const SnippetAddModal = ({ onClose }) => {
   // Estado local para almacenar los valores del formulario
   const dispatch = useDispatch();
-//   const [snippetData, setSnippetData] = useState({
-//     title: '',
-//     code: '',
-//     language: '',
-//     style: '',
-//   });
+
   const [newSnippet, setNewSnippet] = useState({
     title: '',
     code: '',
@@ -19,9 +14,28 @@ const SnippetAddModal = ({ onClose }) => {
     style: '',      
   })
 
+  const [snippets, setSnippets] = useState([]);
+  const [languageChoices, setLanguageChoices] = useState([]);
+  const [styleChoices, setStyleChoices] = useState([]);
+
+  useEffect(() => {
+      const fetchSnippets = async () => {
+          const response = await fetch('http://localhost:8000/api/snippets/');
+          const data = await response.json();
+          setSnippets(data.snippets);
+          setLanguageChoices(data.language_choices);
+          setStyleChoices(data.style_choices);
+      };
+
+      fetchSnippets();
+  }, []);
+
+
   // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name)
+    console.log(value)
     setNewSnippet((prevData) => ({
       ...prevData,
       [name]: value,
@@ -32,6 +46,7 @@ const SnippetAddModal = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // onAddSnippet(snippetData);
+    console.log(newSnippet)
     dispatch(addSnippet(newSnippet));
     setNewSnippet({ title: '', code: '', language: '', style: '' });
     onClose(); // Cierra el modal después de agregar el snippet
@@ -45,6 +60,9 @@ const SnippetAddModal = ({ onClose }) => {
         
         <h2>Add New Snippet</h2>
         <form onSubmit={handleSubmit}>
+    
+      
+
           <div style={modalStyles.formGroup}>
             <label>Title:</label>
             <input
@@ -66,27 +84,39 @@ const SnippetAddModal = ({ onClose }) => {
               style={modalStyles.textarea}
             />
           </div>
-          <div style={modalStyles.formGroup}>
-            <label>Language:</label>
-            <input
-              type="text"
-              name="language"
-              value={newSnippet.language}
-              onChange={handleChange}
-              required
-              style={modalStyles.input}
-            />
-          </div>
-          <div style={modalStyles.formGroup}>
-            <label>Style:</label>
-            <input
-              type="text"
-              name="style"
+
+          <label htmlFor="language">Language:</label>
+            <select
+                id="language"
+                name="language"
+                value={newSnippet.language}
+                onChange={handleChange}
+                required
+                style={modalStyles.input}
+            >
+                {languageChoices.map(([value, label]) => (
+                <option key={value} value={value}>
+                    {label}
+                </option>
+                ))}
+            </select>
+
+            {/* Dropdown para seleccionar estilo */}
+            <label htmlFor="style">Style:</label>
+            <select id="style" 
+              name="style"              
               value={newSnippet.style}
               onChange={handleChange}
               style={modalStyles.input}
-            />
-          </div>
+            
+            >
+                {styleChoices.map(([value, label]) => (
+                    <option key={value} value={value}>
+                        {label}
+                    </option>
+                ))}
+            </select>
+
           <button type="submit" style={modalStyles.submitButton}>Add Snippet</button>
         </form>
       </div>
