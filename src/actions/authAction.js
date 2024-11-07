@@ -6,6 +6,11 @@ export const LOGOUT = "LOGOUT";
 export const REGISTER_SUCESS = "REGISTER_SUCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 
+// actions/authActions.js
+export const setAuthenticated = (isAuthenticated) => ({
+    type: 'SET_AUTHENTICATED',
+    payload: isAuthenticated,
+});
 
 export const login = (username, password) => async (dispatch) => {
     try {

@@ -1,83 +1,70 @@
 // App.js
 import React, { useEffect,useState } from 'react';
-//import TodoList from './components/TodoList';
-//import UsuarioList from './components/UsuarioList';
-// import SnippetList from './components/SnippetList';
-// import SnippetAddModal from './components/SnippetAddModal';
-// import SnippetDetailModal from './components/SnippetDetailModal';
-// import Login from './components/Login';
-// import Register from './components/Register';
+
 import SnippetContainer from './components/SnippetContainer';
 import { useDispatch, useSelector } from 'react-redux';
 //import { getToken } from './actions/snippetAction';
 import Auth from './components/Auth';
+import UserProfile from './components/UserProfile';
+import { setAuthenticated } from './actions/authAction';
 
 
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 const App = () => {
-
-  const dispatch = useDispatch();
-  // const [showAddModal, setShowAddModal] = useState(false);
-  // const [selectedSnippet, setSelectedSnippet] = useState(null);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
+  //const [isAuthenticated,setIsAuthenticated] = useState(false);
+  //console.log(isAuthenticated);
 
-  // const [isRegistering, setIsRegistering] = useState(false);
 
-  // console.log(isRegistering)
 
-  // useEffect(() => {
-  //   dispatch(getToken("walter","123456"));
-  // }, [dispatch]);
+useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        dispatch(setAuthenticated(true)); // Usar la acción de Redux
+    }
+}, [dispatch]);
 
-/*   const handleAddSnippet = () => {
-    setShowAddModal(true);
-  };
 
-  const handleCloseModal = () => {
-    setSelectedSnippet(null);
-    setShowAddModal(false);
-  };
+//   useEffect(() => {
+//     const token = localStorage.getItem('authToken');
+//     if (token) {
+//         setIsAuthenticated(true); // Usar el setter de `useState`
+//     }
+// }, []);
 
-  const handleSnippetSelect = (snippet) => {
-    setSelectedSnippet(snippet);
-  }; */
 
   return (
-    <div>
-      
-      {isAuthenticated ? (
-        <SnippetContainer /> // Muestra los snippets cuando está autenticado
-        // <>
-        //   <SnippetList onSnippetSelect={handleSnippetSelect} />
+    <Router>
+      <div>
+        <Routes>
+          {/* Ruta pública para el componente Auth (Login/Register) */}
+          <Route path="/auth" element={<Auth />} />
 
-        //   <button onClick={handleAddSnippet}>Add Snippet</button>
-        //   {showAddModal && <SnippetAddModal onClose={handleCloseModal} />}
+          {/* Ruta privada para el SnippetContainer */}
+          <Route
+            path="/snippets"
+            element={
+              isAuthenticated ? <SnippetContainer /> : <Navigate to="/auth" replace />
+            }
+          />
 
-        //   {selectedSnippet && (
-        //       <SnippetDetailModal
-        //         snippetDetail={selectedSnippet}
-        //         onClose={handleCloseModal}
-        //       />
-        //   )}
-        // </>
-      ):(
-        <Auth /> // Muestra los formularios de autenticación
-        // <>
-        // {/* Si el usuario no está autenticado, muestra los formularios de login/registro */}
-        // {isRegistering ? (
-        //   <Register />
-        // ) : (
-        //   <Login />
-        // )}
-        // {/* Botón para alternar entre login y registro */}
-        //   <button onClick={() => setIsRegistering(!isRegistering)}>
-        //     {isRegistering ? 'Already have an account? Login' : 'No account? Register'}
-        //   </button>
-        // </>
-      )}
+          {/* Ruta privada para el UserProfile */}
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? <UserProfile /> : <Navigate to="/auth" replace />
+            }
+          />
 
-    </div>
+          {/* Redirección por defecto al Login */}
+          <Route path="/" element={<Navigate to="/auth" replace />} />
+        </Routes>
+      </div>
+    </Router>
   );
+
 };
 
 export default App;

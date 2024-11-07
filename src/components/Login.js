@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../actions/authAction.js'
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -11,12 +12,23 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const error = useSelector((state) => state.user.error)
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const navigate = useNavigate();
 
     console.log("State in Register component:", useSelector((state) => state.user));
     const handleSubmit = (e) => {
         e.preventDefault()       
         dispatchEvent(login(username, password))
     }
+
+
+    // Efecto para redirigir cuando el usuario se autentica
+    useEffect(() => {
+        console.log(isAuthenticated)
+
+        if (isAuthenticated) {
+        navigate('/profile'); // O cualquier otra ruta
+        }
+    }, [isAuthenticated, navigate]);
 
     return (
         <div>

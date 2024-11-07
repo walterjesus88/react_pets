@@ -8,6 +8,8 @@ const Auth = () => {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const [isRegistering, setIsRegistering] = useState(false);
 
+    console.log('estoy en authenticated',isAuthenticated)
+
     const toggleAuthMode = () => {
         setIsRegistering(!isRegistering);
     };
