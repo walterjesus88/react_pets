@@ -7,12 +7,14 @@ const API_URL = 'http://localhost:8000/api/snippets/';
 export const getSnippets = async () => {
   try {
     console.log('fetchData');
-    const response = await axios.get(`${API_URL}`, {
-        headers: {
-          'Content-Type': 'application/json', // Ajusta según lo que necesites
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Si necesitas un token de autorización
-        },
-      } );
+    const response = await axios.get(`${API_URL}`,
+    //  {
+    //     headers: {
+    //       'Content-Type': 'application/json', // Ajusta según lo que necesites
+    //       'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Si necesitas un token de autorización
+    //     },
+    //   }
+   );
     console.log(response.data);
     return response.data;
   } catch (error) {
