@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Auth from './components/Auth';
 import UserProfile from './components/UserProfile';
 import { setAuthenticated } from './actions/authAction';
-
+import CartSummary from './components/CartSummary'; // Ajusta la ruta si es necesario
+import CartPage from './components/CartPage';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -15,8 +16,6 @@ const App = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const dispatch = useDispatch();
   //const [isAuthenticated,setIsAuthenticated] = useState(false);
-  //console.log(isAuthenticated);
-
 
 
 useEffect(() => {
@@ -27,21 +26,16 @@ useEffect(() => {
 }, [dispatch]);
 
 
-//   useEffect(() => {
-//     const token = localStorage.getItem('authToken');
-//     if (token) {
-//         setIsAuthenticated(true); // Usar el setter de `useState`
-//     }
-// }, []);
-
 
   return (
     <Router>
       <div>
+        <CartSummary />
+
         <Routes>
           {/* Ruta pública para el componente Auth (Login/Register) */}
           <Route path="/auth" element={<Auth />} />
-
+          <Route path="/cart" element={<CartPage />} />
           {/* Ruta privada para el SnippetContainer */}
           <Route
             path="/snippets"

@@ -18,17 +18,17 @@ const SnippetAddModal = ({ onClose }) => {
   const [languageChoices, setLanguageChoices] = useState([]);
   const [styleChoices, setStyleChoices] = useState([]);
 
-  useEffect(() => {
-      const fetchSnippets = async () => {
-          const response = await fetch('http://localhost:8000/api/snippets/');
-          const data = await response.json();
-          setSnippets(data.snippets);
-          setLanguageChoices(data.language_choices);
-          setStyleChoices(data.style_choices);
-      };
+  // useEffect(() => {
+  //     const fetchSnippets = async () => {
+  //         const response = await fetch('http://localhost:8000/api/snippets/');
+  //         const data = await response.json();
+  //         setSnippets(data.snippets);
+  //         setLanguageChoices(data.language_choices);
+  //         setStyleChoices(data.style_choices);
+  //     };
 
-      fetchSnippets();
-  }, []);
+  //     fetchSnippets();
+  // }, []);
 
 
   // Maneja los cambios en los campos del formulario
